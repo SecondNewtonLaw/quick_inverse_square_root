@@ -10,7 +10,7 @@ impl AccuracyLevel {
             AccuracyLevel::Low => 1,
             AccuracyLevel::Mid => 2,
             AccuracyLevel::High => 3,
-            _ => panic!("Invalid accuracy level!"),
+            //_ => panic!("Invalid accuracy level!"),
         }
     }
     pub(crate) fn get_from_number(num: i8) -> AccuracyLevel {
