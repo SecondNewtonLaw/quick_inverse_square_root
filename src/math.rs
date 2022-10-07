@@ -23,7 +23,7 @@ impl AccuracyLevel {
     }
 }
 
-pub fn q_isqrt(number: f32, accuracy: AccuracyLevel) -> f32 {
+pub fn q_isqrt32(number: f32, accuracy: AccuracyLevel) -> f32 {
     // Set tmp vars.
     let mut tmp_y = number;
     unsafe {
@@ -37,6 +37,23 @@ pub fn q_isqrt(number: f32, accuracy: AccuracyLevel) -> f32 {
         let tmp_x2: f32 = number * 0.5;
         const THREE_HALFS: f32 = 1.5;
         tmp_y *= THREE_HALFS - (tmp_x2 * (tmp_y * tmp_y)); // accuracy++
+    }
+    return tmp_y;
+}
+pub fn q_isqrt64(number: f64, accuracy: AccuracyLevel) -> f64 {
+    // Set tmp vars.
+    let mut tmp_y = number;
+    unsafe {
+        let mut tmp_i: i64;
+        tmp_i = std::mem::transmute(tmp_y); // Evil bit point hack. -> Transmute to get from f64 to i64.
+        tmp_i = 0x5fe6eb50c7b537a9 - (tmp_i >> 1); // What the fuck.
+        tmp_y = std::mem::transmute(tmp_i); // reverse conversion.
+    }
+    for _ in 0..(accuracy.get_accuracy()) {
+        // 1 is ok, 3 for best accuracy
+        let tmp_x2: f64 = number * 0.5;
+        const MAGIC_MULT: f64 = 1.5;
+        tmp_y *= MAGIC_MULT - (tmp_x2 * (tmp_y * tmp_y)); // accuracy++
     }
     return tmp_y;
 }

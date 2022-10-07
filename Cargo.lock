@@ -4,4 +4,4 @@ version = 3
 
 [[package]]
 name = "quake_inverse_square_root_algorthim"
-version = "0.1.0"
+version = "0.2.0"
